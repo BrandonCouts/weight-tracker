@@ -1,0 +1,22 @@
+services:
+  db:
+    image: mysql:8
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: weight_tracker
+    ports:
+      - "3306:3306"
+  backend:
+    build: ./backend
+    env_file: ./backend/.env.example
+    ports:
+      - "3000:3000"
+    depends_on:
+      - db
+  frontend:
+    build: ./frontend
+    env_file: ./frontend/.env.example
+    ports:
+      - "8080:80"
+    depends_on:
+      - backend
