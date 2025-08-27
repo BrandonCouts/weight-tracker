@@ -1,4 +1,5 @@
 const db = require('../db');
+const { logError } = require('../logger');
 
 exports.list = async (req, res) => {
   const date = req.query.date || new Date().toISOString().split('T')[0];
@@ -34,6 +35,7 @@ exports.list = async (req, res) => {
     const remainingCalories = bmr - userRows[0].calories_to_cut - totalCalories;
     res.json({ foods: rows, totalCalories, remainingCalories });
   } catch (err) {
+    logError(err);
     res.sendStatus(500);
   }
 };
@@ -53,6 +55,7 @@ exports.create = async (req, res) => {
       name = rows[0].name;
       calories = rows[0].calories * servings;
     } catch (err) {
+      logError(err);
       return res.sendStatus(500);
     }
   }
@@ -67,6 +70,7 @@ exports.create = async (req, res) => {
     );
     res.status(201).json({ id: result.insertId, name, calories, consumed_at: date, food_item_id, servings });
   } catch (err) {
+    logError(err);
     res.sendStatus(500);
   }
 };
@@ -101,6 +105,7 @@ exports.update = async (req, res) => {
     }
     res.sendStatus(204);
   } catch (err) {
+    logError(err);
     res.sendStatus(500);
   }
 };

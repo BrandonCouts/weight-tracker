@@ -1,4 +1,5 @@
 const db = require('../db');
+const { logError } = require('../logger');
 
 exports.get = async (req, res) => {
   try {
@@ -11,6 +12,7 @@ exports.get = async (req, res) => {
     }
     res.json(rows[0]);
   } catch (err) {
+    logError(err);
     res.sendStatus(500);
   }
 };
@@ -39,6 +41,7 @@ exports.update = async (req, res) => {
     await db.execute(`UPDATE users SET ${fields.join(', ')} WHERE id = ?`, params);
     res.sendStatus(204);
   } catch (err) {
+    logError(err);
     res.sendStatus(500);
   }
 };

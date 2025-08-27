@@ -5,6 +5,7 @@ import Dashboard from '../pages/Dashboard.vue';
 import Foods from '../pages/Foods.vue';
 import FoodItems from '../pages/FoodItems.vue';
 import Settings from '../pages/Settings.vue';
+import ErrorLog from '../pages/ErrorLog.vue';
 
 const routes = [
   { path: '/', redirect: '/login' },
@@ -13,7 +14,8 @@ const routes = [
   { path: '/dashboard', component: Dashboard, meta: { requiresAuth: true } },
   { path: '/foods', component: Foods, meta: { requiresAuth: true } },
   { path: '/food-items', component: FoodItems, meta: { requiresAuth: true } },
-  { path: '/settings', component: Settings, meta: { requiresAuth: true } }
+  { path: '/settings', component: Settings, meta: { requiresAuth: true } },
+  { path: '/errors', component: ErrorLog, meta: { requiresAuth: true } }
 ];
 
 const router = createRouter({

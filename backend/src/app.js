@@ -7,6 +7,7 @@ const weightRoutes = require('./routes/weights');
 const foodRoutes = require('./routes/foods');
 const foodItemRoutes = require('./routes/foodItems');
 const userRoutes = require('./routes/user');
+const errorRoutes = require('./routes/errors');
 require('./db');
 
 const app = express();
@@ -18,6 +19,7 @@ app.use('/api/weights', weightRoutes);
 app.use('/api/foods', foodRoutes);
 app.use('/api/food-items', foodItemRoutes);
 app.use('/api/user', userRoutes);
+app.use('/api/errors', errorRoutes);
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {

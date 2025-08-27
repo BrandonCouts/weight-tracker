@@ -1,5 +1,5 @@
 <script setup>
-import { ref } from 'vue';
+import { ref, computed } from 'vue';
 
 const theme = ref(document.body.classList.contains('dark') ? 'dark' : 'light');
 
@@ -9,6 +9,17 @@ function toggleTheme() {
   document.body.classList.add(theme.value);
   localStorage.setItem('theme', theme.value);
 }
+
+const isAdmin = computed(() => {
+  const token = localStorage.getItem('token');
+  if (!token) return false;
+  try {
+    const payload = JSON.parse(atob(token.split('.')[1]));
+    return payload.role === 'admin';
+  } catch (e) {
+    return false;
+  }
+});
 </script>
 
 <template>
@@ -18,6 +29,7 @@ function toggleTheme() {
       <router-link to="/foods">Foods</router-link>
       <router-link to="/food-items">Food Items</router-link>
       <router-link to="/settings">Settings</router-link>
+      <router-link to="/errors" v-if="isAdmin">Error Log</router-link>
       <button @click="toggleTheme">{{ theme === 'light' ? 'Dark' : 'Light' }} Mode</button>
     </nav>
     <router-view />
