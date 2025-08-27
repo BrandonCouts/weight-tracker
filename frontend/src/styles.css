@@ -141,3 +141,18 @@ li {
   display: flex;
   flex-direction: column;
 }
+
+.auth-link {
+  max-width: 400px;
+  margin: 10px auto 0;
+  text-align: right;
+}
+
+.auth-note {
+  max-width: 400px;
+  margin: 10px auto 0;
+}
+
+.auth-note a {
+  color: var(--primary-color);
+}

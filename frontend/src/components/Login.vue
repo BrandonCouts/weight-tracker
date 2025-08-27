@@ -29,5 +29,7 @@ function goToRegister() {
     <input v-model="password" type="password" placeholder="Password" />
     <button type="submit">Login</button>
   </form>
-  <button type="button" @click="goToRegister">Register</button>
+  <div class="auth-link">
+    <button type="button" @click="goToRegister">Register</button>
+  </div>
 </template>

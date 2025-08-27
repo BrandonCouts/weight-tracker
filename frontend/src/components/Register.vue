@@ -37,4 +37,7 @@ async function register() {
     </select>
     <button type="submit">Register</button>
   </form>
+  <div class="auth-note">
+    Are you already a member? Click here to <router-link to="/login">login</router-link>?
+  </div>
 </template>
