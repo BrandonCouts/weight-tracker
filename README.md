@@ -2,6 +2,10 @@
 
 A weight tracking web application scaffolded with Node.js, Vue 3, and MySQL.
 
+## Features
+
+- Light and dark themes with a toggle in the navigation.
+
 ## Development
 
 ### Backend
