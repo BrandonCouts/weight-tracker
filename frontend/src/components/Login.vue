@@ -6,7 +6,8 @@ const username = ref('');
 const password = ref('');
 const router = useRouter();
 async function login() {
-  await api.post('/auth/login', { username: username.value, password: password.value });
+  const res = await api.post('/auth/login', { username: username.value, password: password.value });
+  localStorage.setItem('token', res.data.token);
   router.push('/dashboard');
 }
 </script>
