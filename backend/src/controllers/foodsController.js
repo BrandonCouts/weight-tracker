@@ -1,12 +1,38 @@
 const db = require('../db');
 
 exports.list = async (req, res) => {
+  const date = req.query.date || new Date().toISOString().split('T')[0];
   try {
     const [rows] = await db.execute(
-      'SELECT id, name, calories, servings, consumed_at FROM foods WHERE user_id = ? ORDER BY consumed_at DESC',
+      'SELECT id, name, calories, servings FROM foods WHERE user_id = ? AND consumed_at = ? ORDER BY consumed_at DESC',
+      [req.user.id, date]
+    );
+    const [totals] = await db.execute(
+      'SELECT COALESCE(SUM(calories), 0) AS total FROM foods WHERE user_id = ? AND consumed_at = ?',
+      [req.user.id, date]
+    );
+    const [userRows] = await db.execute(
+      'SELECT height_in, is_male FROM users WHERE id = ?',
       [req.user.id]
     );
-    res.json(rows);
+    const [weightRows] = await db.execute(
+      'SELECT value FROM weights WHERE user_id = ? ORDER BY recorded_at DESC LIMIT 1',
+      [req.user.id]
+    );
+    const weight = weightRows[0] ? Number(weightRows[0].value) : 0;
+    const lbToKg = 0.453592;
+    const inToCm = 2.54;
+    const heightCoef = 6.25;
+    const age = 33;
+    const bmr =
+      10 * weight * lbToKg +
+      heightCoef * userRows[0].height_in * inToCm -
+      5 * age -
+      161 +
+      166 * userRows[0].is_male;
+    const totalCalories = Number(totals[0].total);
+    const remainingCalories = bmr - totalCalories;
+    res.json({ foods: rows, totalCalories, remainingCalories });
   } catch (err) {
     res.sendStatus(500);
   }
