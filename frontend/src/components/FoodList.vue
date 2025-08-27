@@ -39,9 +39,22 @@ function remove(id) {
   <Modal v-if="editing" @close="cancelEdit">
     <form @submit.prevent="saveEdit">
       <h3>Edit Food</h3>
-      <input v-model="form.name" placeholder="Name" />
-      <input type="number" v-model.number="form.calories" placeholder="Calories" />
-      <input type="number" v-model.number="form.servings" placeholder="Servings" />
+      <label for="edit-name">Name</label>
+      <input id="edit-name" v-model="form.name" placeholder="Name" />
+      <label for="edit-calories">Calories</label>
+      <input
+        id="edit-calories"
+        type="number"
+        v-model.number="form.calories"
+        placeholder="Calories"
+      />
+      <label for="edit-servings">Servings</label>
+      <input
+        id="edit-servings"
+        type="number"
+        v-model.number="form.servings"
+        placeholder="Servings"
+      />
       <div class="actions">
         <button type="submit">Save</button>
         <button type="button" @click="cancelEdit">Cancel</button>
