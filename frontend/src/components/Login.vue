@@ -8,6 +8,7 @@ const router = useRouter();
 async function login() {
   const res = await api.post('/auth/login', { username: username.value, password: password.value });
   localStorage.setItem('token', res.data.token);
+  window.dispatchEvent(new Event('token-changed'));
   router.push('/dashboard');
 }
 </script>

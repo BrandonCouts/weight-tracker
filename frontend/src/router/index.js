@@ -15,7 +15,7 @@ const routes = [
   { path: '/foods', component: Foods, meta: { requiresAuth: true } },
   { path: '/food-items', component: FoodItems, meta: { requiresAuth: true } },
   { path: '/settings', component: Settings, meta: { requiresAuth: true } },
-  { path: '/errors', component: ErrorLog, meta: { requiresAuth: true } }
+  { path: '/errors', component: ErrorLog, meta: { requiresAuth: true, requiresAdmin: true } }
 ];
 
 const router = createRouter({
@@ -24,11 +24,24 @@ const router = createRouter({
 });
 
 router.beforeEach((to, from, next) => {
-  if (to.meta.requiresAuth && !localStorage.getItem('token')) {
+  const token = localStorage.getItem('token');
+  if (to.meta.requiresAuth && !token) {
     next('/login');
-  } else {
-    next();
+    return;
   }
+  if (to.meta.requiresAdmin) {
+    try {
+      const payload = JSON.parse(atob(token.split('.')[1]));
+      if (payload.role !== 'admin') {
+        next('/dashboard');
+        return;
+      }
+    } catch (e) {
+      next('/dashboard');
+      return;
+    }
+  }
+  next();
 });
 
 export default router;

@@ -10,11 +10,16 @@ function toggleTheme() {
   localStorage.setItem('theme', theme.value);
 }
 
+const token = ref(localStorage.getItem('token'));
+
+window.addEventListener('token-changed', () => {
+  token.value = localStorage.getItem('token');
+});
+
 const isAdmin = computed(() => {
-  const token = localStorage.getItem('token');
-  if (!token) return false;
+  if (!token.value) return false;
   try {
-    const payload = JSON.parse(atob(token.split('.')[1]));
+    const payload = JSON.parse(atob(token.value.split('.')[1]));
     return payload.role === 'admin';
   } catch (e) {
     return false;
