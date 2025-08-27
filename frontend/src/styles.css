@@ -70,6 +70,14 @@ input {
   color: var(--text-color);
 }
 
+select {
+  padding: 8px;
+  margin-bottom: 10px;
+  border: 1px solid var(--input-border);
+  background-color: var(--input-bg);
+  color: var(--text-color);
+}
+
 button {
   background-color: var(--button-bg);
   color: var(--button-color);
@@ -88,6 +96,20 @@ li {
   margin-bottom: 5px;
   padding: 5px;
   border: 1px solid var(--input-border);
+}
+
+.list-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.actions button {
+  margin-left: 5px;
+}
+
+.trend {
+  margin-left: 5px;
 }
 
 .container {

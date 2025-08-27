@@ -25,10 +25,14 @@ function remove(id) {
 
 <template>
   <ul>
-    <li v-for="item in store.foods" :key="item.id">
-      {{ item.name }} ({{ item.calories }} cal, {{ item.servings }} serving{{ item.servings > 1 ? 's' : '' }})
-      <button @click="edit(item)">Edit</button>
-      <button @click="remove(item.id)">Delete</button>
+    <li v-for="item in store.foods" :key="item.id" class="list-item">
+      <span>
+        {{ item.name }} ({{ item.calories }} cal, {{ item.servings }} serving{{ item.servings > 1 ? 's' : '' }})
+      </span>
+      <span class="actions">
+        <button @click="edit(item)">Edit</button>
+        <button @click="remove(item.id)">Delete</button>
+      </span>
     </li>
   </ul>
 </template>
