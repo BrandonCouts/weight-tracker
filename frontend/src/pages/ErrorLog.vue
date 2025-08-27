@@ -4,12 +4,22 @@ import api from '../api';
 
 const log = ref('');
 
-onMounted(async () => {
+const fetchLog = async () => {
   const res = await api.get('/errors');
   log.value = res.data;
-});
+};
+
+const clearLog = async () => {
+  await api.delete('/errors');
+  await fetchLog();
+};
+
+onMounted(fetchLog);
 </script>
 
 <template>
-  <pre>{{ log }}</pre>
+  <div>
+    <button @click="clearLog">Clear Log</button>
+    <pre>{{ log }}</pre>
+  </div>
 </template>

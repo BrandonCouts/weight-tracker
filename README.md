@@ -7,7 +7,7 @@ A weight tracking web application scaffolded with Node.js, Vue 3, and MySQL.
 - Light and dark themes with a toggle in the navigation.
 - Daily food tracker with calorie totals and remaining allowance based on profile info.
 - User settings page to adjust height, gender, and daily calorie cut.
-- Role-based access control with admin-only error log view.
+- Role-based access control with admin-only error log view and ability to clear logs.
 
 ## Development
 

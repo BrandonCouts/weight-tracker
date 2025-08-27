@@ -15,3 +15,7 @@ exports.readLog = async () => {
     return '';
   }
 };
+
+exports.clearLog = async () => {
+  await fs.promises.truncate(logPath, 0);
+};
