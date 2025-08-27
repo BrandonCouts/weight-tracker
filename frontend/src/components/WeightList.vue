@@ -1,5 +1,6 @@
 <script setup>
-import { onMounted, computed } from 'vue';
+import { onMounted, computed, ref } from 'vue';
+import Modal from './Modal.vue';
 import { useWeightStore } from '../store/weights';
 import { useUserStore } from '../store/user';
 const store = useWeightStore();
@@ -22,12 +23,24 @@ function arrowFor(index) {
   return '→';
 }
 
-function edit(entry) {
-  const input = prompt('Weight', displayWeight(entry.weight));
-  if (input == null) return;
+const editing = ref(null);
+const editWeight = ref('');
+
+function startEdit(entry) {
+  editing.value = entry;
+  editWeight.value = displayWeight(entry.weight);
+}
+
+function saveEdit() {
+  if (!editing.value) return;
   const w =
-    userStore.info?.units === 'imperial' ? parseFloat(input) / 2.20462 : Number(input);
-  store.updateWeight(entry.id, w);
+    userStore.info?.units === 'imperial' ? parseFloat(editWeight.value) / 2.20462 : Number(editWeight.value);
+  store.updateWeight(editing.value.id, w);
+  editing.value = null;
+}
+
+function cancelEdit() {
+  editing.value = null;
 }
 
 function remove(id) {
@@ -38,6 +51,16 @@ function remove(id) {
 </script>
 
 <template>
+  <Modal v-if="editing" @close="cancelEdit">
+    <form @submit.prevent="saveEdit">
+      <h3>Edit Weight</h3>
+      <input type="number" step="0.1" v-model="editWeight" :placeholder="unitLabel" />
+      <div class="actions">
+        <button type="submit">Save</button>
+        <button type="button" @click="cancelEdit">Cancel</button>
+      </div>
+    </form>
+  </Modal>
   <ul>
     <li v-for="(entry, index) in store.weights" :key="entry.id" class="list-item">
       <span>
@@ -45,7 +68,7 @@ function remove(id) {
         <span v-if="arrowFor(index)" class="trend">{{ arrowFor(index) }}</span>
       </span>
       <span class="actions">
-        <button @click="edit(entry)">Edit</button>
+        <button @click="startEdit(entry)">Edit</button>
         <button @click="remove(entry.id)">Delete</button>
       </span>
     </li>
