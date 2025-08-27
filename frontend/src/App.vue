@@ -30,13 +30,17 @@ const isAdmin = computed(() => {
 <template>
   <div>
     <nav>
-      <router-link to="/dashboard">Weights</router-link>
-      <router-link to="/foods">Foods</router-link>
-      <router-link to="/food-items">Food Items</router-link>
-      <router-link to="/settings">Settings</router-link>
-      <router-link to="/errors" v-if="isAdmin">Error Log</router-link>
-      <button @click="toggleTheme">{{ theme === 'light' ? 'Dark' : 'Light' }} Mode</button>
+      <div class="container">
+        <router-link to="/dashboard">Weights</router-link>
+        <router-link to="/foods">Foods</router-link>
+        <router-link to="/food-items">Food Items</router-link>
+        <router-link to="/settings">Settings</router-link>
+        <router-link to="/errors" v-if="isAdmin">Error Log</router-link>
+        <button @click="toggleTheme">{{ theme === 'light' ? 'Dark' : 'Light' }} Mode</button>
+      </div>
     </nav>
-    <router-view />
+    <main class="container">
+      <router-view />
+    </main>
   </div>
 </template>
