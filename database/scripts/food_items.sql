@@ -1,0 +1,20 @@
+-- Food items table
+CREATE TABLE IF NOT EXISTS food_items (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  user_id INT NOT NULL,
+  name VARCHAR(100) NOT NULL,
+  serving_size DECIMAL(10,2) NOT NULL,
+  serving_unit VARCHAR(20) NOT NULL,
+  calories DECIMAL(10,2) NOT NULL,
+  fat DECIMAL(10,2) DEFAULT 0,
+  saturated_fat DECIMAL(10,2) DEFAULT 0,
+  trans_fat DECIMAL(10,2) DEFAULT 0,
+  cholesterol DECIMAL(10,2) DEFAULT 0,
+  sodium DECIMAL(10,2) DEFAULT 0,
+  carbohydrates DECIMAL(10,2) DEFAULT 0,
+  fiber DECIMAL(10,2) DEFAULT 0,
+  sugar DECIMAL(10,2) DEFAULT 0,
+  protein DECIMAL(10,2) DEFAULT 0,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+);
