@@ -3,13 +3,15 @@ import Login from '../components/Login.vue';
 import Register from '../components/Register.vue';
 import Dashboard from '../pages/Dashboard.vue';
 import Foods from '../pages/Foods.vue';
+import FoodItems from '../pages/FoodItems.vue';
 
 const routes = [
   { path: '/', redirect: '/login' },
   { path: '/login', component: Login },
   { path: '/register', component: Register },
   { path: '/dashboard', component: Dashboard, meta: { requiresAuth: true } },
-  { path: '/foods', component: Foods, meta: { requiresAuth: true } }
+  { path: '/foods', component: Foods, meta: { requiresAuth: true } },
+  { path: '/food-items', component: FoodItems, meta: { requiresAuth: true } }
 ];
 
 const router = createRouter({

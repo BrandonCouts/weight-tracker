@@ -5,6 +5,7 @@ const cors = require('cors');
 const authRoutes = require('./routes/auth');
 const weightRoutes = require('./routes/weights');
 const foodRoutes = require('./routes/foods');
+const foodItemRoutes = require('./routes/foodItems');
 require('./db');
 
 const app = express();
@@ -14,6 +15,7 @@ app.use(express.json());
 app.use('/api/auth', authRoutes);
 app.use('/api/weights', weightRoutes);
 app.use('/api/foods', foodRoutes);
+app.use('/api/food-items', foodItemRoutes);
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
