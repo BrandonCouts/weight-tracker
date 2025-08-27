@@ -9,6 +9,12 @@ async function login() {
   const res = await api.post('/auth/login', { username: username.value, password: password.value });
   localStorage.setItem('token', res.data.token);
   window.dispatchEvent(new Event('token-changed'));
+  try {
+    const { data } = await api.get('/user');
+    document.body.classList.remove('light', 'dark');
+    document.body.classList.add(data.theme || 'light');
+    localStorage.setItem('theme', data.theme || 'light');
+  } catch (e) {}
   router.push('/dashboard');
 }
 </script>

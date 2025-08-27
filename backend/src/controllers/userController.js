@@ -4,7 +4,7 @@ const { logError } = require('../logger');
 exports.get = async (req, res) => {
   try {
     const [rows] = await db.execute(
-      'SELECT username, height_in, is_male, calories_to_cut FROM users WHERE id = ?',
+      'SELECT username, height_in, is_male, calories_to_cut, theme FROM users WHERE id = ?',
       [req.user.id]
     );
     if (rows.length === 0) {
@@ -18,8 +18,8 @@ exports.get = async (req, res) => {
 };
 
 exports.update = async (req, res) => {
-  const { height_in, is_male, calories_to_cut } = req.body;
-  if (height_in == null && is_male == null && calories_to_cut == null) {
+  const { height_in, is_male, calories_to_cut, theme } = req.body;
+  if (height_in == null && is_male == null && calories_to_cut == null && theme == null) {
     return res.status(400).json({ error: 'Nothing to update' });
   }
   const fields = [];
@@ -35,6 +35,13 @@ exports.update = async (req, res) => {
   if (calories_to_cut != null) {
     fields.push('calories_to_cut = ?');
     params.push(calories_to_cut);
+  }
+  if (theme != null) {
+    if (theme !== 'light' && theme !== 'dark') {
+      return res.status(400).json({ error: 'Invalid theme' });
+    }
+    fields.push('theme = ?');
+    params.push(theme);
   }
   params.push(req.user.id);
   try {

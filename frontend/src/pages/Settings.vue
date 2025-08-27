@@ -5,7 +5,8 @@ import api from '../api';
 const form = reactive({
   height_in: 0,
   is_male: 0,
-  calories_to_cut: 0
+  calories_to_cut: 0,
+  theme: 'light'
 });
 
 onMounted(async () => {
@@ -13,7 +14,15 @@ onMounted(async () => {
   form.height_in = data.height_in;
   form.is_male = data.is_male;
   form.calories_to_cut = data.calories_to_cut;
+  form.theme = data.theme || 'light';
 });
+
+function toggleTheme() {
+  form.theme = form.theme === 'light' ? 'dark' : 'light';
+  document.body.classList.remove('light', 'dark');
+  document.body.classList.add(form.theme);
+  localStorage.setItem('theme', form.theme);
+}
 
 async function save() {
   await api.put('/user', form);
@@ -39,6 +48,9 @@ async function save() {
         Daily Calories to Cut:
         <input type="number" v-model.number="form.calories_to_cut" />
       </label>
+      <div>
+        <button type="button" @click="toggleTheme">{{ form.theme === 'light' ? 'Dark' : 'Light' }} Mode</button>
+      </div>
       <button type="submit">Save</button>
     </form>
   </div>
