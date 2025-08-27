@@ -40,7 +40,7 @@ async function submit() {
       </li>
     </ul>
     <div v-if="selected">
-      <input v-model="servings" type="number" step="0.1" min="0" />
+      <input v-model="servings" type="number" step="0.01" min="0" />
       <button type="submit">Add</button>
     </div>
   </form>

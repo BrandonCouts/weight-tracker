@@ -14,7 +14,7 @@ async function submit() {
 
 <template>
   <form @submit.prevent="submit">
-    <input v-model="weight" placeholder="Weight" />
+    <input v-model="weight" type="number" step="0.1" placeholder="Weight" />
     <input v-model="note" placeholder="Note" />
     <button type="submit">Add</button>
   </form>
