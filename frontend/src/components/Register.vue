@@ -5,18 +5,16 @@ import api from '../api';
 const username = ref('');
 const password = ref('');
 const router = useRouter();
-async function login() {
-  const res = await api.post('/auth/login', { username: username.value, password: password.value });
-  localStorage.setItem('token', res.data.token);
-  router.push('/dashboard');
+async function register() {
+  await api.post('/auth/register', { username: username.value, password: password.value });
+  router.push('/login');
 }
 </script>
 
 <template>
-  <form @submit.prevent="login">
+  <form @submit.prevent="register">
     <input v-model="username" placeholder="Username" />
     <input v-model="password" type="password" placeholder="Password" />
-    <button type="submit">Login</button>
+    <button type="submit">Register</button>
   </form>
-  <router-link to="/register">Register</router-link>
 </template>
