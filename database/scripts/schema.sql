@@ -7,6 +7,7 @@ CREATE TABLE IF NOT EXISTS users (
   password_hash VARCHAR(255) NOT NULL,
   height_in INT NOT NULL DEFAULT 0,
   is_male TINYINT(1) NOT NULL DEFAULT 0,
+  calories_to_cut INT NOT NULL DEFAULT 0,
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 

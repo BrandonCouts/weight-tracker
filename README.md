@@ -6,6 +6,7 @@ A weight tracking web application scaffolded with Node.js, Vue 3, and MySQL.
 
 - Light and dark themes with a toggle in the navigation.
 - Daily food tracker with calorie totals and remaining allowance based on profile info.
+- User settings page to adjust height, gender, and daily calorie cut.
 
 ## Development
 
@@ -25,7 +26,7 @@ npm run dev
 
 ### Registration
 
-New user registration requires height (inches) and gender to calculate daily calorie allowance.
+New user registration requires height (inches) and gender. These values and a daily calorie cut can be updated later on the settings page.
 
 ### Docker
 ```bash

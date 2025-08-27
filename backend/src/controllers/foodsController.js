@@ -12,7 +12,7 @@ exports.list = async (req, res) => {
       [req.user.id, date]
     );
     const [userRows] = await db.execute(
-      'SELECT height_in, is_male FROM users WHERE id = ?',
+      'SELECT height_in, is_male, calories_to_cut FROM users WHERE id = ?',
       [req.user.id]
     );
     const [weightRows] = await db.execute(
@@ -31,7 +31,7 @@ exports.list = async (req, res) => {
       161 +
       166 * userRows[0].is_male;
     const totalCalories = Number(totals[0].total);
-    const remainingCalories = bmr - totalCalories;
+    const remainingCalories = bmr - userRows[0].calories_to_cut - totalCalories;
     res.json({ foods: rows, totalCalories, remainingCalories });
   } catch (err) {
     res.sendStatus(500);

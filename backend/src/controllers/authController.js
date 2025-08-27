@@ -3,15 +3,15 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 
 exports.register = async (req, res) => {
-  const { username, password, height_in, is_male } = req.body;
+  const { username, password, height_in, is_male, calories_to_cut = 0 } = req.body;
   if (!username || !password || height_in == null || is_male == null) {
     return res.status(400).json({ error: 'Username, password, height, and gender required' });
   }
   try {
     const passwordHash = await bcrypt.hash(password, 10);
     const [result] = await db.execute(
-      'INSERT INTO users (username, password_hash, height_in, is_male) VALUES (?, ?, ?, ?)',
-      [username, passwordHash, height_in, is_male]
+      'INSERT INTO users (username, password_hash, height_in, is_male, calories_to_cut) VALUES (?, ?, ?, ?, ?)',
+      [username, passwordHash, height_in, is_male, calories_to_cut]
     );
     res.status(201).json({ id: result.insertId, username });
   } catch (err) {

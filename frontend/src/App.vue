@@ -17,6 +17,7 @@ function toggleTheme() {
       <router-link to="/dashboard">Weights</router-link>
       <router-link to="/foods">Foods</router-link>
       <router-link to="/food-items">Food Items</router-link>
+      <router-link to="/settings">Settings</router-link>
       <button @click="toggleTheme">{{ theme === 'light' ? 'Dark' : 'Light' }} Mode</button>
     </nav>
     <router-view />
