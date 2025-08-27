@@ -17,6 +17,10 @@ async function login() {
   } catch (e) {}
   router.push('/dashboard');
 }
+
+function goToRegister() {
+  router.push('/register');
+}
 </script>
 
 <template>
@@ -25,5 +29,5 @@ async function login() {
     <input v-model="password" type="password" placeholder="Password" />
     <button type="submit">Login</button>
   </form>
-  <router-link to="/register">Register</router-link>
+  <button type="button" @click="goToRegister">Register</button>
 </template>
