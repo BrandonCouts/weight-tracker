@@ -1,13 +1,41 @@
 const db = require('../db');
+const { logError } = require('../logger');
 
 exports.list = async (req, res) => {
+  const date = req.query.date || new Date().toISOString().split('T')[0];
   try {
     const [rows] = await db.execute(
-      'SELECT id, name, calories, servings, consumed_at FROM foods WHERE user_id = ? ORDER BY consumed_at DESC',
+      'SELECT id, name, calories, servings FROM foods WHERE user_id = ? AND consumed_at = ? ORDER BY consumed_at DESC',
+      [req.user.id, date]
+    );
+    const [totals] = await db.execute(
+      'SELECT COALESCE(SUM(calories), 0) AS total FROM foods WHERE user_id = ? AND consumed_at = ?',
+      [req.user.id, date]
+    );
+    const [userRows] = await db.execute(
+      'SELECT height_in, is_male, calories_to_cut FROM users WHERE id = ?',
       [req.user.id]
     );
-    res.json(rows);
+    const [weightRows] = await db.execute(
+      'SELECT value FROM weights WHERE user_id = ? ORDER BY recorded_at DESC LIMIT 1',
+      [req.user.id]
+    );
+    const weight = weightRows[0] ? Number(weightRows[0].value) : 0;
+    const lbToKg = 0.453592;
+    const inToCm = 2.54;
+    const heightCoef = 6.25;
+    const age = 33;
+    const bmr =
+      10 * weight * lbToKg +
+      heightCoef * userRows[0].height_in * inToCm -
+      5 * age -
+      161 +
+      166 * userRows[0].is_male;
+    const totalCalories = Number(totals[0].total);
+    const remainingCalories = bmr - userRows[0].calories_to_cut - totalCalories;
+    res.json({ foods: rows, totalCalories, remainingCalories });
   } catch (err) {
+    logError(err);
     res.sendStatus(500);
   }
 };
@@ -27,6 +55,7 @@ exports.create = async (req, res) => {
       name = rows[0].name;
       calories = rows[0].calories * servings;
     } catch (err) {
+      logError(err);
       return res.sendStatus(500);
     }
   }
@@ -41,6 +70,7 @@ exports.create = async (req, res) => {
     );
     res.status(201).json({ id: result.insertId, name, calories, consumed_at: date, food_item_id, servings });
   } catch (err) {
+    logError(err);
     res.sendStatus(500);
   }
 };
@@ -75,6 +105,7 @@ exports.update = async (req, res) => {
     }
     res.sendStatus(204);
   } catch (err) {
+    logError(err);
     res.sendStatus(500);
   }
 };

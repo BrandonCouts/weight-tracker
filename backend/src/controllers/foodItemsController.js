@@ -1,4 +1,5 @@
 const db = require('../db');
+const { logError } = require('../logger');
 
 exports.list = async (req, res) => {
   const q = req.query.q || '';
@@ -9,6 +10,7 @@ exports.list = async (req, res) => {
     );
     res.json(rows);
   } catch (err) {
+    logError(err);
     res.sendStatus(500);
   }
 };
@@ -25,6 +27,7 @@ exports.create = async (req, res) => {
     );
     res.status(201).json({ id: result.insertId, name });
   } catch (err) {
+    logError(err);
     res.sendStatus(500);
   }
 };
