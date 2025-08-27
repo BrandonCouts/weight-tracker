@@ -1,10 +1,11 @@
 <script setup>
 import { ref, computed, watch } from 'vue';
 import { useRouter } from 'vue-router';
-import api from './api';
+import { useUserStore } from './store/user';
 
 const token = ref(localStorage.getItem('token'));
 const router = useRouter();
+const userStore = useUserStore();
 
 window.addEventListener('token-changed', () => {
   token.value = localStorage.getItem('token');
@@ -15,7 +16,8 @@ watch(
   async (newToken) => {
     if (newToken) {
       try {
-        const { data } = await api.get('/user');
+        await userStore.fetch();
+        const data = userStore.info;
         document.body.classList.remove('light', 'dark');
         document.body.classList.add(data.theme || 'light');
         localStorage.setItem('theme', data.theme || 'light');

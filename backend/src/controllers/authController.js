@@ -4,16 +4,27 @@ const jwt = require('jsonwebtoken');
 const { logError } = require('../logger');
 
 exports.register = async (req, res) => {
-  const { username, password, height_in, is_male, calories_to_cut = 0, role = 'user' } = req.body;
+  const {
+    username,
+    password,
+    height_in,
+    is_male,
+    calories_to_cut = 0,
+    role = 'user',
+    units = 'scientific'
+  } = req.body;
   if (!username || !password || height_in == null || is_male == null) {
     return res.status(400).json({ error: 'Username, password, height, and gender required' });
+  }
+  if (units !== 'imperial' && units !== 'scientific') {
+    return res.status(400).json({ error: 'Invalid units' });
   }
   try {
     const passwordHash = await bcrypt.hash(password, 10);
     const roleValue = role === 'admin' ? 'admin' : 'user';
     const [result] = await db.execute(
-      'INSERT INTO users (username, password_hash, height_in, is_male, calories_to_cut, role) VALUES (?, ?, ?, ?, ?, ?)',
-      [username, passwordHash, height_in, is_male, calories_to_cut, roleValue]
+      'INSERT INTO users (username, password_hash, height_in, is_male, calories_to_cut, role, units) VALUES (?, ?, ?, ?, ?, ?, ?)',
+      [username, passwordHash, height_in, is_male, calories_to_cut, roleValue, units]
     );
     res.status(201).json({ id: result.insertId, username });
   } catch (err) {
