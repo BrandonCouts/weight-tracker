@@ -57,7 +57,7 @@ async function save() {
       </label>
       <label>
         Height ({{ form.units === 'imperial' ? 'in' : 'cm' }}):
-        <input type="number" v-model.number="form.height" />
+        <input type="number" step="0.1" v-model.number="form.height" />
       </label>
       <label>
         Gender:
