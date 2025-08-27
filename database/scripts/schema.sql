@@ -10,6 +10,7 @@ CREATE TABLE IF NOT EXISTS users (
   calories_to_cut INT NOT NULL DEFAULT 0,
   role VARCHAR(10) NOT NULL DEFAULT 'user',
   theme VARCHAR(5) NOT NULL DEFAULT 'light',
+  units VARCHAR(10) NOT NULL DEFAULT 'scientific',
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 

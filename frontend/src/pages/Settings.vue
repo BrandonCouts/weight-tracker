@@ -1,20 +1,27 @@
 <script setup>
 import { reactive, onMounted } from 'vue';
 import api from '../api';
+import { useUserStore } from '../store/user';
 
+const userStore = useUserStore();
 const form = reactive({
-  height_in: 0,
+  height: 0,
   is_male: 0,
   calories_to_cut: 0,
-  theme: 'light'
+  theme: 'light',
+  units: 'scientific'
 });
 
 onMounted(async () => {
-  const { data } = await api.get('/user');
-  form.height_in = data.height_in;
+  if (!userStore.info) {
+    await userStore.fetch();
+  }
+  const data = userStore.info;
+  form.height = data.units === 'imperial' ? data.height_in : data.height_in * 2.54;
   form.is_male = data.is_male;
   form.calories_to_cut = data.calories_to_cut;
   form.theme = data.theme || 'light';
+  form.units = data.units || 'scientific';
 });
 
 function toggleTheme() {
@@ -25,7 +32,15 @@ function toggleTheme() {
 }
 
 async function save() {
-  await api.put('/user', form);
+  const payload = {
+    height_in: form.units === 'imperial' ? form.height : form.height / 2.54,
+    is_male: form.is_male,
+    calories_to_cut: form.calories_to_cut,
+    theme: form.theme,
+    units: form.units
+  };
+  await api.put('/user', payload);
+  userStore.setUnits(form.units);
 }
 </script>
 
@@ -34,8 +49,15 @@ async function save() {
     <h2>User Settings</h2>
     <form @submit.prevent="save">
       <label>
-        Height (in):
-        <input type="number" v-model.number="form.height_in" />
+        Units:
+        <select v-model="form.units">
+          <option value="imperial">Imperial</option>
+          <option value="scientific">Scientific</option>
+        </select>
+      </label>
+      <label>
+        Height ({{ form.units === 'imperial' ? 'in' : 'cm' }}):
+        <input type="number" v-model.number="form.height" />
       </label>
       <label>
         Gender:
